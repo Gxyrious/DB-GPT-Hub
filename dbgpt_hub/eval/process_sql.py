@@ -195,6 +195,7 @@ def parse_col(toks, start_idx, tables_with_alias, schema, default_tables=None):
     """
     :returns next idx, column id
     """
+    # import pdb;pdb.set_trace()
     tok = toks[start_idx]
     if tok == "*":
         return start_idx + 1, schema.idMap[tok]
@@ -578,6 +579,7 @@ def parse_sql(toks, start_idx, tables_with_alias, schema):
     )
     sql["from"] = {"table_units": table_units, "conds": conds}
     # select clause
+    # import pdb; pdb.set_trace()
     _, select_col_units = parse_select(
         toks, idx, tables_with_alias, schema, default_tables
     )
@@ -631,6 +633,7 @@ def load_data(fpath):
 def get_sql(schema, query):
     toks = tokenize(query)
     tables_with_alias = get_tables_with_alias(schema.schema, toks)
+    # import pdb; pdb.set_trace()
     _, sql = parse_sql(toks, 0, tables_with_alias, schema)
 
     return sql

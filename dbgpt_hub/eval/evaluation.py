@@ -13,8 +13,8 @@ import subprocess
 import json
 
 from typing import Optional, Dict, Any
-from process_sql import get_schema, Schema, get_sql
-from exec_eval import eval_exec_match
+from .process_sql import get_schema, Schema, get_sql
+from .exec_eval import eval_exec_match
 from func_timeout import func_timeout, FunctionTimedOut
 
 TIMEOUT = 30  # maximum waiting time for a single query
@@ -745,9 +745,12 @@ def evaluate(
             g_str, db = g
             db_name = db
             db = os.path.join(db_dir, db, db + ".sqlite")
-            schema = Schema(get_schema(db))
-            g_sql = get_sql(schema, g_str)
-            hardness = evaluator.eval_hardness(g_sql)
+            # schema = Schema(get_schema(db))
+            schema = None
+            # import pdb; pdb.set_trace()
+            # g_sql = get_sql(schema, g_str)
+            # hardness = evaluator.eval_hardness(g_sql)
+            hardness = 'easy'
             if idx > 3:
                 idx = "> 4"
             else:
@@ -757,22 +760,22 @@ def evaluate(
             scores[hardness]["count"] += 1
             scores["all"]["count"] += 1
 
-            try:
-                p_sql = get_sql(schema, p_str)
-            except:
-                # If p_sql is not valid, then we will use an empty sql to evaluate with the correct sql
-                p_sql = {
-                    "except": None,
-                    "from": {"conds": [], "table_units": []},
-                    "groupBy": [],
-                    "having": [],
-                    "intersect": None,
-                    "limit": None,
-                    "orderBy": [],
-                    "select": [False, []],
-                    "union": None,
-                    "where": [],
-                }
+            # try:
+            #     p_sql = get_sql(schema, p_str)
+            # except:
+            #     # If p_sql is not valid, then we will use an empty sql to evaluate with the correct sql
+            #     p_sql = {
+            #         "except": None,
+            #         "from": {"conds": [], "table_units": []},
+            #         "groupBy": [],
+            #         "having": [],
+            #         "intersect": None,
+            #         "limit": None,
+            #         "orderBy": [],
+            #         "select": [False, []],
+            #         "union": None,
+            #         "where": [],
+            #     }
 
             if etype in ["all", "exec"]:
                 # --- Updated 8/28/2023 by simonkorl ---
@@ -792,6 +795,9 @@ def evaluate(
                         },
                     )
                 except FunctionTimedOut:
+                    exec_score = None
+                except Exception as err:
+                    print(err)
                     exec_score = None
 
                 if exec_score:

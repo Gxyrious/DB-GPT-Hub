@@ -33,6 +33,7 @@ def inference(model: ChatModel, predict_data: List[Dict], **input_kwargs):
 
 
 def predict(model: ChatModel):
+    import pdb; pdb.set_trace()
     args = model.data_args
     ## predict file can be give by param --predicted_input_filename ,output_file can be gived by param predicted_out_filename
     predict_data = prepare_dataset(args.predicted_input_filename)

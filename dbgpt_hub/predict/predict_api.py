@@ -1,5 +1,6 @@
 import os
 from dbgpt_hub.predict import predict
+from dbgpt_hub.llm_base.chat_model import ChatModel
 from typing import Optional, Dict, Any
 
 
@@ -11,6 +12,7 @@ def start_predict(
 
     # Default Arguments
     if args is None:
+        raise Exception('no args')
         args = {
             "model_name_or_path": "codellama/CodeLlama-13b-Instruct-hf",
             "template": "llama2",
@@ -24,7 +26,8 @@ def start_predict(
         args = args
 
     # Execute prediction
-    predict.predict(args)
+    model = ChatModel(args)
+    predict.predict(model)
 
 
 if __name__ == "__main__":

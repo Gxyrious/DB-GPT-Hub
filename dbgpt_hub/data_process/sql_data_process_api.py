@@ -73,6 +73,8 @@ class SqlDataProcessor(object):
 
                 # get primary key info
                 for j in range(len(primary_key)):
+                    if isinstance(primary_key[j], list):
+                        continue
                     if coloumns[primary_key[j] - 1][0] == i:
                         source += (
                             coloumns[primary_key[j] - 1][1]
@@ -200,8 +202,8 @@ if __name__ == "__main__":
     data_folder = os.path.join(ROOT_PATH, "dbgpt_hub/data")
     data_info = [
         {
-            "data_source": "spider",
-            "train_file": ["train_spider.json", "train_others.json"],
+            "data_source": "bird",
+            "train_file": ["train.json"],
             "dev_file": ["dev.json"],
             "tables_file": "tables.json",
             "db_id_name": "db_id",
